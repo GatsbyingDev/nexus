@@ -20,6 +20,7 @@ interface MemberListItemProps {
 
 export const MemberListItem = ({ member }: MemberListItemProps) => {
   const user = typeof member.userId === "string" ? null : member.userId;
+  const fallbackUserId = typeof member.userId === "string" ? member.userId : member.userId._id;
   const status = user?.status === "invisible" ? "offline" : user?.status ?? "offline";
 
   return (
@@ -38,7 +39,7 @@ export const MemberListItem = ({ member }: MemberListItemProps) => {
       </div>
       <div className="min-w-0 flex-1">
         <p className="truncate text-sm">
-          {member.nickname || user?.displayName || user?.username || member.userId}
+          {member.nickname || user?.displayName || user?.username || fallbackUserId}
         </p>
       </div>
     </div>
