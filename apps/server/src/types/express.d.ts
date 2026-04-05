@@ -1,9 +1,13 @@
-import type { IUserDocument } from "../models/User.js";
-
 declare global {
   namespace Express {
+    interface AuthUser {
+      userId: string;
+      username: string;
+      email: string;
+    }
+
     interface Request {
-      user?: IUserDocument;
+      user?: AuthUser;
     }
   }
 }

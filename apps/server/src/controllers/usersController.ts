@@ -36,6 +36,19 @@ export const getUser = asyncHandler(async (req: Request, res: Response) => {
   res.json({ success: true, data: user });
 });
 
+export const getMe = asyncHandler(async (req: AuthedRequest, res: Response) => {
+  if (!req.user) {
+    throw new AppError("Unauthorized", 401);
+  }
+
+  const user = await UserModel.findById(req.user.userId).select("-password");
+  if (!user) {
+    throw new AppError("User not found", 404);
+  }
+
+  res.json({ success: true, data: user });
+});
+
 export const updateMe = asyncHandler(async (req: AuthedRequest, res: Response) => {
   if (!req.user) {
     throw new AppError("Unauthorized", 401);

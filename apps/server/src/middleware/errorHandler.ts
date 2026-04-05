@@ -66,7 +66,11 @@ export const globalErrorHandler = (
     (err as { code?: number }).code === 11000
   ) {
     const duplicate = err as { keyValue?: Record<string, unknown> };
-    sendError(res, 409, "Duplicate key error", duplicate.keyValue, (err as Error).stack);
+    const duplicateStack =
+      "stack" in err && typeof (err as { stack?: unknown }).stack === "string"
+        ? (err as { stack: string }).stack
+        : undefined;
+    sendError(res, 409, "Duplicate key error", duplicate.keyValue, duplicateStack);
     return;
   }
 

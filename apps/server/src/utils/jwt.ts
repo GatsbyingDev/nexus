@@ -1,5 +1,5 @@
 import type { Response } from "express";
-import jwt, { type JwtPayload } from "jsonwebtoken";
+import jwt, { type JwtPayload, type SignOptions } from "jsonwebtoken";
 import { env } from "../config/env";
 
 export interface AccessTokenPayload {
@@ -29,13 +29,13 @@ const parseExpiryToSeconds = (value: string): number => {
 
 export const signAccessToken = (payload: AccessTokenPayload): string => {
   return jwt.sign(payload, env.JWT_SECRET, {
-    expiresIn: env.JWT_EXPIRES_IN
+    expiresIn: env.JWT_EXPIRES_IN as SignOptions["expiresIn"]
   });
 };
 
 export const signRefreshToken = (payload: RefreshTokenPayload): string => {
   return jwt.sign(payload, env.JWT_REFRESH_SECRET, {
-    expiresIn: env.JWT_REFRESH_EXPIRES_IN
+    expiresIn: env.JWT_REFRESH_EXPIRES_IN as SignOptions["expiresIn"]
   });
 };
 

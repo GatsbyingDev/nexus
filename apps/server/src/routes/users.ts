@@ -2,6 +2,7 @@ import { Router } from "express";
 import {
   deleteMe,
   getFriends,
+  getMe,
   getUser,
   removeFriend,
   respondToFriend,
@@ -15,10 +16,7 @@ import { handleCloudinaryUpload, uploadSingle } from "../middleware/upload";
 const usersRouter = Router();
 
 usersRouter.use(authenticate);
-usersRouter.get("/me", async (req, res) => {
-  req.params.id = (req as typeof req & { user?: { userId: string } }).user?.userId ?? "";
-  return getUser(req, res);
-});
+usersRouter.get("/me", getMe);
 usersRouter.patch("/me", updateMe);
 usersRouter.post("/me/avatar", uploadSingle("avatar"), handleCloudinaryUpload("nexus/avatars"), uploadAvatar);
 usersRouter.delete("/me", deleteMe);
