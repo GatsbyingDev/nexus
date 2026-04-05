@@ -1,0 +1,17 @@
+{
+  "name": "nexus",
+  "version": "1.0.0",
+  "private": true,
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "dev": "concurrently \"npm --workspace @nexus/server run dev\" \"npm --workspace @nexus/client run dev\"",
+    "build": "npm run build --workspaces --if-present",
+    "lint": "npm run typecheck --workspaces --if-present"
+  },
+  "devDependencies": {
+    "concurrently": "^9.1.2"
+  }
+}
