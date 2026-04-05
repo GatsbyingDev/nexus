@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { type InfiniteData, useQueryClient } from "@tanstack/react-query";
-import type { IChannel, IMessage, IServer, IServerMember, PaginatedResponse, UserStatus } from "@nexus/shared/src/types";
+import type { IChannel, IMessage, IServer, IServerMember, PaginatedResponse } from "@nexus/shared/src/types";
 import { connectSocket, disconnectSocket, getSocket } from "@/lib/socket";
 import { useAuthStore } from "@/stores/authStore";
 
@@ -77,28 +77,8 @@ export const useSocket = (): void => {
       );
     };
 
-    const onUserPresence = (payload: { userId: string; status: UserStatus }): void => {
-      queryClient.setQueriesData({ queryKey: ["serverMembers"] }, (oldData: unknown) => {
-        if (!Array.isArray(oldData)) {
-          return oldData;
-        }
-
-        return oldData.map((member) => {
-          const candidate = member as IServerMember & { userId?: { _id?: string; status?: string } | string };
-
-          if (typeof candidate.userId === "object" && candidate.userId?._id === payload.userId) {
-            return {
-              ...candidate,
-              userId: {
-                ...candidate.userId,
-                status: payload.status
-              }
-            };
-          }
-
-          return candidate;
-        });
-      });
+    const onUserPresence = (): void => {
+      void queryClient.invalidateQueries({ queryKey: ["serverMembers"] });
     };
 
     const onChannelCreated = (channel: IChannel): void => {

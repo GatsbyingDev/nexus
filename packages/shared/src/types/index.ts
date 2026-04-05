@@ -43,7 +43,7 @@ export interface IUser {
   displayName: string;
   avatar?: string;
   banner?: string;
-  status: Exclude<UserStatus, UserStatus.OFFLINE>;
+  status: "online" | "idle" | "dnd" | "invisible";
   customStatus?: string;
   friends: IFriend[];
   createdAt: string;
